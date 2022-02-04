@@ -4,8 +4,8 @@ import { check, sleep } from 'k6';
 let counter = 0
 export const options = {
   stages: [
-    { duration: '10s', target: 10 },
     { duration: '10s', target: 20 },
+    { duration: '10s', target: 40 },
   ],
 };
 
@@ -17,7 +17,7 @@ export default function (data) {
   let num = counter % 50
   counter ++
   const params =  { headers: { 'Content-Type': 'application/json', }, };
-  const res = http.post('http://localhost:3005/sort_array', JSON.stringify({"data": data[num]}), params);
+  const res = http.post(`http://${__ENV.HOST}:${__ENV.PORT}/sort_array`, JSON.stringify({"data": data[num]}), params);
   check(res, { 'status was 200': (r) => r.status == 200 });
 }
 
